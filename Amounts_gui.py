@@ -10,7 +10,7 @@ class Amounts_GUI(QtWidgets.QWidget):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Amounts()
-        self.ui.calculate.clicked.connect(self.open_new_window)
+#        self.ui.calculate.clicked.connect(self.open_new_window)
 
 
 def start_amount():

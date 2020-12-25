@@ -13,10 +13,10 @@ class Amounts(QWidget):
     def setup(self):
         self.setup_general()
         self.setup_button()
-        self.setup_data()
+        #self.setup_data()
 
     def setup_general(self):
-        self.setFixedSize(600, 900)
+        self.setFixedSize(1700, 800)
         self.setStyleSheet(GENERAL_STYLE_SHEET)
         self.setWindowTitle("Amounts")
         #self.setPalette(get_palette("calories_calculator.jpg"))

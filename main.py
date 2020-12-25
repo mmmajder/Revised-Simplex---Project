@@ -1,4 +1,4 @@
-from calculator_gui import start_calculator
+from Amounts_gui import start_amount
 from Dish import Dish
 
 
@@ -13,4 +13,5 @@ def get_dishes(file_name):
 if __name__ == '__main__':
     # DISHES = get_dishes("dishes.txt")
     # print(DISHES)
-    start_calculator()
+    # start_calculator()
+    start_amount()
