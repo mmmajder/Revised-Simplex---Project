@@ -1,16 +1,8 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QRadioButton
-from stylesheet import *
 
-goals = ['lose weigth', 'gain weigth', 'gain muscle']
-activities = ['little or no exercise',
-              'light: 1-3 trainings a week',
-              'moderate: 4-5 trainings a week',
-              'active: 6-7 trainings a week',
-              'very active: intense trainings 6-7 times a week']
-ages = []
-for i in range(2, 100):
-    ages.append(str(i))
+from calculating_functions import list_of_strings_in_range, get_activities, get_goals
+from stylesheet import *
 
 
 class Calculator(QWidget):
@@ -32,38 +24,51 @@ class Calculator(QWidget):
         self.setWindowIcon(get_icon())
 
     def setup_button(self):
-        self.calculate = QPushButton("calculate", self)
-        self.calculate.setGeometry(QtCore.QRect(250, 480, 300, 60))
+        self.calculate = QPushButton("CALCULATE", self)
+        self.calculate.setGeometry(QtCore.QRect(250, 450, 300, 60))
         self.calculate.setStyleSheet(BUTTON_STYLE_SHEET)
 
     def setup_data(self):
+        start = 250
+        x = 130
+        y = 50
+        d = 40
         self.age = QComboBox(self)
-        self.age.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.age.setGeometry(QtCore.QRect(start, x, 300, d))
         self.age.setStyleSheet(COMBOBOX_STYLE_SHEET)
-        self.age.addItems(ages)
+        self.age.addItems(list_of_strings_in_range(15, 80, ""))
+        self.age.setCurrentIndex(10)
 
         self.male = QRadioButton(self)
-        self.male.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.male.setText("male")
+        self.male.setStyleSheet(LABEL_STYLE_SHEET)
+        self.male.setChecked(True)
+        self.male.setGeometry(QtCore.QRect(start, x + y + 5, 300, d))
 
         self.female = QRadioButton(self)
-        self.female.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.female.setText("female")
+        self.female.setStyleSheet(LABEL_STYLE_SHEET)
+        self.female.setGeometry(QtCore.QRect(start + 100, x + y + 5, 300, d))
 
         self.height = QComboBox(self)
-        self.height.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.height.setGeometry(QtCore.QRect(start, x + 2 * y, 300, d))
         self.height.setStyleSheet(COMBOBOX_STYLE_SHEET)
-        self.height.addItems(range(150, 210))
+        self.height.addItems(list_of_strings_in_range(150, 210, " cm"))
+        self.height.setCurrentIndex(20)
 
         self.weight = QComboBox(self)
-        self.weight.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.weight.setGeometry(QtCore.QRect(250, x + 3 * y, 300, d))
         self.weight.setStyleSheet(COMBOBOX_STYLE_SHEET)
-        self.weight.addItems(range(10, 200))
-
-        self.goal = QComboBox(self)
-        self.goal.setGeometry(QtCore.QRect(430, 620, 700, 30))
-        self.goal.setStyleSheet(COMBOBOX_STYLE_SHEET)
-        self.goal.addItems(goals)
+        self.weight.addItems(list_of_strings_in_range(10, 200, " kg"))
+        self.weight.setCurrentIndex(45)
 
         self.activity = QComboBox(self)
-        self.activity.setGeometry(QtCore.QRect(430, 620, 700, 30))
+        self.activity.setGeometry(QtCore.QRect(start, x + 4 * y, 300, d))
         self.activity.setStyleSheet(COMBOBOX_STYLE_SHEET)
-        self.activity.addItems(activities)
+        self.activity.addItems(get_activities())
+        self.activity.setCurrentIndex(1)
+
+        self.goal = QComboBox(self)
+        self.goal.setGeometry(QtCore.QRect(start, x + 5 * y, 300, d))
+        self.goal.setStyleSheet(COMBOBOX_STYLE_SHEET)
+        self.goal.addItems(get_goals())
