@@ -3,7 +3,7 @@ import math
 import numpy as np
 from numpy.linalg import inv
 
-from Dish import Dish
+from classes.Dish import Dish
 
 
 def get_additonal_table(n, matrix):

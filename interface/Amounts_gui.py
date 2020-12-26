@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication
 
-from Amounts import *
+from interface.Amounts import Amounts
 
 
 class Amounts_GUI(QtWidgets.QWidget):

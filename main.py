@@ -1,5 +1,5 @@
-from Amounts_gui import start_amount
-from Dish import Dish
+from classes.Dish import Dish
+from interface.Amounts_gui import start_amount
 
 
 def get_dishes(file_name):

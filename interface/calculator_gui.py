@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication
 
 from calculating_functions import calculate_calories
-from calculator import Calculator
+from interface.calculator import Calculator
 
 
 class Calculator_GUI(QtWidgets.QWidget):

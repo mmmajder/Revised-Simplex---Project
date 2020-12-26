@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QRadioButton
 
 from calculating_functions import list_of_strings_in_range, get_activities, get_goals
-from stylesheet import *
+from material.stylesheet import *
 
 
 class Calculator(QWidget):

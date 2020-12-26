@@ -1,6 +1,6 @@
 import math
 
-from Nutients import Nutrients
+from classes.Nutrients import Nutrients
 
 
 def roundup(x):

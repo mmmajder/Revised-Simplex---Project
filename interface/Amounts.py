@@ -1,8 +1,8 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLabel
 
-from Dish_Table import Dish_Table, Dish_Amount
-from stylesheet import *
+from interface.Dish_Table import Dish_Amount, Dish_Table
+from material.stylesheet import *
 
 calories, proteins, fats, carbs = 2400, 65, 45, 200
 
