@@ -10,6 +10,7 @@ def get_dishes(file_name):
     file.close()
     return dishes
 
+
 if __name__ == '__main__':
     # DISHES = get_dishes("dishes.txt")
     # print(DISHES)

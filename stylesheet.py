@@ -2,7 +2,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QBrush, QPalette, QImage, QIcon
 
-TITLE_STYLE_SHEET = "color: #018673; font-size: 30px; padding-bottom: 10px; font-family: Arial, Helvetica, sans-serif; font-style: italic, bold;"
+TITLE_STYLE_SHEET = "color: #018673; font-size: 30px; padding-bottom: 10px; font-family: Arial, Helvetica, sans-serif; font-style: bold;"
 LABEL_STYLE_SHEET = "color: #018673; font-size: 22px; padding-bottom: 10px; font-family: Arial, Helvetica, sans-serif;"
 BUTTON_STYLE_SHEET = "background-color: #018673; border: none; color: white; font-weight: bold; padding: 15px 32px;" \
                      "text-align: center; text-decoration: none; display: inline-block; font-size: 20px; margin: 4px 2px; cursor: pointer"

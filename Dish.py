@@ -10,3 +10,13 @@ class Dish:
         self.min = int(list[5])
         self.max = int(list[6])
         self.price = int(list[7])
+
+    # def toString(self):
+    #     return str(self.name + '|' +
+    #                self.calories + '|' +
+    #                self.proteins + '|' +
+    #                self.carbs + '|' +
+    #                self.fats + '|' +
+    #                self.min + '|' +
+    #                self.max + '|' +
+    #                self.price)
