@@ -37,7 +37,7 @@ class Dish_Table(QTableWidget):
     def add_dishes(self):
         rowPosition = self.rowCount()
         self.insertRow(rowPosition)
-        for item in get_dishes("dishes.txt"):
+        for item in get_dishes("material/dishes.txt"):
             for i in range(8):
                 self.setItem(rowPosition, i, QTableWidgetItem(item[i]))
             rowPosition = self.rowCount()
@@ -67,7 +67,7 @@ class Dish_Amount(QTableWidget):
     def add_dishes(self):
         rowPosition = self.rowCount()
         self.insertRow(rowPosition)
-        for item in get_dishes("dishes.txt"):
+        for item in get_dishes("material/dishes.txt"):
             for i in range(8):
                 self.setItem(rowPosition, i, QTableWidgetItem(item[i]))
             rowPosition = self.rowCount()

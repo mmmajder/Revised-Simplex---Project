@@ -20,7 +20,7 @@ class Calculator(QWidget):
         self.setFixedSize(600, 900)
         self.setStyleSheet(GENERAL_STYLE_SHEET)
         self.setWindowTitle("Calories Calculator")
-        self.setPalette(get_palette("calories_calculator.jpg"))
+        self.setPalette(get_palette("material/calories_calculator.jpg"))
         self.setWindowIcon(get_icon())
 
     def setup_button(self):

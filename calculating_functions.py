@@ -1,6 +1,23 @@
 import math
 
+from classes.Dish import Dish
 from classes.Nutrients import Nutrients
+
+
+def get_nutrient_range_string(nutrient_range):
+    return "Calories: " + str(nutrient_range.calories) + "kcal\tProteins: " + str(
+        nutrient_range.proteins_min) + "-" + str(nutrient_range.proteins_max) + "g\tCarbs: " + str(
+        nutrient_range.carbs_min) + "-" + str(nutrient_range.carbs_max) + \
+           "g\tFats: " + str(nutrient_range.fats_min) + "-" + str(nutrient_range.fats_max) + "g"
+
+
+def get_dishes(file_name):
+    dishes = []
+    file = open(file_name)
+    for line in file.readlines():
+        dishes.append(Dish(line.rstrip().split('|')))
+    file.close()
+    return dishes
 
 
 def roundup(x):

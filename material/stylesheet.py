@@ -7,7 +7,7 @@ LABEL_STYLE_SHEET = "color: #018673; font-size: 22px; padding-bottom: 10px; font
 BUTTON_STYLE_SHEET = "background-color: #018673; border: none; color: white; font-weight: bold; padding: 15px 32px;" \
                      "text-align: center; text-decoration: none; display: inline-block; font-size: 20px; margin: 4px 2px; cursor: pointer"
 COMBOBOX_STYLE_SHEET = "background: #ffffff; border: 1px solid #dfdfdf;"
-ICON_PATH = "diet.png"
+ICON_PATH = "material/diet.png"
 TABLE_STYLE_SHEET = "border: 1px solid #ddd; text-align: left; border-collapse: collapse; width: 100%; padding: 15px;"
 GROUP_BOX_STYLE_SHEET = "background-color: #ffffff;"
 GENERAL_STYLE_SHEET = "color: #018673; font-size: 22px;"

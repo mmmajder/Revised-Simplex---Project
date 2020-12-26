@@ -1,19 +1,18 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLabel
 
+from calculating_functions import get_nutrient_range_string
 from interface.Dish_Table import Dish_Amount, Dish_Table
 from material.stylesheet import *
 
-calories, proteins, fats, carbs = 2400, 65, 45, 200
-
 
 class Amounts(QWidget):
-    def __init__(self):
+    def __init__(self, nutrient_range):
         QWidget.__init__(self)
-        self.setup()
+        self.setup(nutrient_range)
         self.show()
 
-    def setup(self):
+    def setup(self, nutrient_range):
         self.setFixedSize(1700, 800)
         self.setStyleSheet(GENERAL_STYLE_SHEET)
         self.setWindowTitle("Calculate Amounts of Dishes")
@@ -25,8 +24,7 @@ class Amounts(QWidget):
         daily_needs_label.setStyleSheet(LABEL_STYLE_SHEET)
         main_layout.addWidget(daily_needs_label)
 
-        daily_needs = QLabel("Calories: " + str(calories) + "kcal\tProteins: " + str(proteins) + "g\tCarbs: " + str(
-            carbs) + "g\tFats: " + str(fats) + "g")
+        daily_needs = QLabel(get_nutrient_range_string(nutrient_range))
         daily_needs.setStyleSheet(TITLE_STYLE_SHEET)
         main_layout.addWidget(daily_needs)
 

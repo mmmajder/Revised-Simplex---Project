@@ -1,15 +1,17 @@
 import sys
 
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import *
 
-from calculating_functions import calculate_calories
+from calculating_functions import nutrient_range
+from classes.Nutrients import Nutrients
 from interface.calculator import Calculator
 
+NUTRIENT_RANGE = Nutrients(0, 0, 0, 0, 0, 0, 0)
 
-class Calculator_GUI(QtWidgets.QWidget):
+
+class Calculator_GUI(QWidget):
     def __init__(self, parent=None):
-        QtWidgets.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
         self.ui = Calculator()
         self.ui.calculate.clicked.connect(self.open_new_window)
 
@@ -22,8 +24,9 @@ class Calculator_GUI(QtWidgets.QWidget):
         weight = int(self.ui.weight.currentText().replace(" kg", ""))
         activity = self.ui.activity.currentIndex()
         goal = self.ui.goal.currentIndex()
-        # start_amount()
-        print(calculate_calories(age, gender, height, weight, activity, goal))
+        global NUTRIENT_RANGE
+        NUTRIENT_RANGE = nutrient_range(age, gender, height, weight, activity, goal)
+        self.ui.close()
 
 
 def start_calculator():
@@ -32,3 +35,4 @@ def start_calculator():
     cal.raise_()
     cal.activateWindow()
     app.exec_()
+    return NUTRIENT_RANGE
