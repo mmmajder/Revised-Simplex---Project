@@ -20,6 +20,30 @@ def get_dishes(file_name):
     return dishes
 
 
+def get_string_dishes(file_name):
+    dishes = []
+    file = open(file_name)
+    for line in file.readlines():
+        if line:
+            dishes.append(line.rstrip().split('|'))
+    file.close()
+    return dishes
+
+
+def get_dish(name):
+    for dish in get_dishes("material/dishes.txt"):
+        if dish.name == name:
+            return dish
+    return None
+
+
+def save_dishes(file_name, dishes):
+    file = open(file_name, 'w')
+    for dish in dishes:
+        file.write(dish.to_string())
+    file.close()
+
+
 def roundup(x):
     return int(math.ceil(x / 10.0)) * 10
 

@@ -7,16 +7,16 @@ class Dish:
         self.carbs = int(list[3])
         self.fats = int(list[4])
         # min and max amount of food to be eaten
-        self.min = int(list[5])
-        self.max = int(list[6])
-        self.price = int(list[7])
+        self.min = float(list[5])
+        self.max = float(list[6])
+        self.price = float(list[7])
 
-    # def toString(self):
-    #     return str(self.name + '|' +
-    #                self.calories + '|' +
-    #                self.proteins + '|' +
-    #                self.carbs + '|' +
-    #                self.fats + '|' +
-    #                self.min + '|' +
-    #                self.max + '|' +
-    #                self.price)
+    def to_string(self):
+        return str(self.name + '|' +
+                   str(self.calories) + '|' +
+                   str(self.proteins) + '|' +
+                   str(self.carbs) + '|' +
+                   str(self.fats) + '|' +
+                   str(self.min) + '|' +
+                   str(self.max) + '|' +
+                   str(self.price) + '\n')

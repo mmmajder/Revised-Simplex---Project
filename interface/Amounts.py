@@ -33,34 +33,43 @@ class Amounts(QWidget):
         main_layout.addWidget(label_select_dishes)
 
         table_layout = QHBoxLayout()
-        table = Dish_Table()
-        table_layout.addWidget(table)
+
+        self.table = Dish_Table()
+        table_layout.addWidget(self.table)
+
         buttonLayout = QVBoxLayout()
-        select = QPushButton('Select Dish')
-        select.setStyleSheet(BUTTON_STYLE_SHEET)
-        select.clicked.connect(table._addRow)
-        buttonLayout.addWidget(select)
+
+        self.select = QPushButton('Select Dish')
+        self.select.setStyleSheet(BUTTON_STYLE_SHEET)
+        buttonLayout.addWidget(self.select)
+
         button_new = QPushButton('Add New Dish')
         button_new.setStyleSheet(BUTTON_STYLE_SHEET)
-        button_new.clicked.connect(table._addRow)
+        button_new.clicked.connect(self.table._addRow)
         buttonLayout.addWidget(button_new)
-        save_changes = QPushButton('Save changes')
-        save_changes.setStyleSheet(BUTTON_STYLE_SHEET)
-        save_changes.clicked.connect(table._addRow)
-        buttonLayout.addWidget(save_changes)
+
+        self.save_changes = QPushButton('Save changes')
+        self.save_changes.setStyleSheet(BUTTON_STYLE_SHEET)
+        buttonLayout.addWidget(self.save_changes)
+
         table_layout.addLayout(buttonLayout)
-        button_calculate = QPushButton('CALCULATE')
-        button_calculate.setStyleSheet(BUTTON_STYLE_SHEET)
-        # button_calculate.clicked.connect(table._addRow)
-        buttonLayout.addWidget(button_calculate)
+
+        self.button_calculate = QPushButton('CALCULATE')
+        self.button_calculate.setStyleSheet(BUTTON_STYLE_SHEET)
+        buttonLayout.addWidget(self.button_calculate)
+
         main_layout.addLayout(table_layout)
+
         label_select_dishes = QLabel("Amount of dishes you should eat today: ")
         label_select_dishes.setStyleSheet(LABEL_STYLE_SHEET)
         main_layout.addWidget(label_select_dishes)
-        table2 = Dish_Amount()
-        main_layout.addWidget(table2)
-        total = QLabel("Total price: 0€")
-        total.setStyleSheet(TITLE_STYLE_SHEET)
-        total.setAlignment(QtCore.Qt.AlignRight)
-        main_layout.addWidget(total)
+
+        self.dish_amount_table = Dish_Amount()
+        main_layout.addWidget(self.dish_amount_table)
+
+        self.total = QLabel("Total price: 0€")
+        self.total.setStyleSheet(TITLE_STYLE_SHEET)
+        self.total.setAlignment(QtCore.Qt.AlignRight)
+        main_layout.addWidget(self.total)
+
         self.setLayout(main_layout)
