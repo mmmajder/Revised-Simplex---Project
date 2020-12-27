@@ -1,20 +1,21 @@
 import math
 
 import numpy as np
-from numpy.linalg import inv
-
 from Dish import Dish
-from cui import revised_simplex_cui
+
+NUMBER_OF_VARIABLES = 2
 
 
 def get_additonal_table(n, matrix):
-    # 5 because of price, calories, proteins, carbs, fats
-    return matrix[0:2 * n + 5, 1:n + 1]
+    # print(len(matrix))
+    print(n)
+    return matrix[:, 1:n]
 
 
 def getMax(B1, additional_table):
-    first_row = B1[0] * (-1)
+    first_row = B1[0]
     new_matrix = np.matmul(first_row, additional_table)
+    new_matrix *= (-1)
     postion = np.where(new_matrix == np.amax(new_matrix))[0]
     return np.amax(new_matrix), postion
 
@@ -30,49 +31,8 @@ def find_min_ratio(results, y1):
     return min, position
 
 
-def create_solution(r, results, yk):
-    R = results.tolist()
-    print(R)
-    R[r] = R[r]/yk[r]
-    for i in range(len(R)):
-
-        pass
-
-
-def put_dishes_in_matrix(list_of_dishes, calories_min, protein_min, carbs_max, fat_max):
-    # step 1
-    n = len(list_of_dishes)
-    matrix = make_matrix(list_of_dishes, n)
-    # print(matrix)
-    results = get_results(calories_min, carbs_max, fat_max, list_of_dishes, protein_min)
-    # print(results)
-    revised_simplex_cui(matrix, results)
-    #
-    # # step 2
-    # B1 = np.identity(2 * n + 5)
-    # additional_table = get_additonal_table(n, matrix)
-    # print(additional_table)
-    #
-    # # step 3
-    # # y1 = c1-z1
-    # ck_zk, k = getMax(B1, additional_table)
-    # print(k)
-    # # k - u kojoj koloni se nalazi najveci element
-    # print(ck_zk)
-    #
-    # # step 4
-    # print(additional_table[:, k])
-    # yk = np.matmul(inv(np.matrix(B1)), additional_table[:, k])
-    # print(yk)
-    # min_ratio, r = find_min_ratio(results, yk)
-    # print(min_ratio, r)
-    #
-    # # step 5
-    # results = create_solution(r, results, yk)
-
-
 def get_results(calories_min, carbs_max, fat_max, list_of_dishes, protein_min):
-    results = np.array([0.0, -calories_min, -protein_min, carbs_max, fat_max])
+    results = np.array([0.0, calories_min, protein_min, carbs_max, fat_max])
     for dish in list_of_dishes:
         results = np.append(results, dish.max)
         results = np.append(results, -dish.min)
@@ -137,7 +97,79 @@ def get_dishes(file_name):
     file.close()
     return dishes
 
+def changeB1(B1, r, yk):
+    # print(B1)
+    for i in range(1, len(B1)):
+        R = B1[:, i]
+        R[r] = R[r] / yk[r]
+        for j in range(len(R)):
+            if j != r:
+                R[j] = R[j] - yk[j] * R[r]
+        B1[:, i] = R
+    return B1
+
+
+
+def create_solution(r, results, yk):
+    R = np.array(results)
+    R[r] = R[r] / yk[r]
+    # print(R)
+    for i in range(len(R)):
+        if i != r:
+            R[i] = R[i] - yk[i] * R[r]
+    return R.tolist()
+
+
+def start(A, results):
+    n, m = A.shape
+    B1 = np.identity(n)
+    additional_table = get_additonal_table(NUMBER_OF_VARIABLES + 1, A)
+    # print(additional_table)
+
+    while True:
+        # y1 = c1-z1
+        ck_zk, k = getMax(B1, additional_table)
+        if ck_zk < 0:
+            break
+        # print(k)
+        # k - u kojoj koloni se nalazi najveci element
+        # print(ck_zk)
+
+        # print(additional_table[:, k])
+        yk = np.matmul(np.matrix(B1), additional_table[:, k])
+        # print(yk)
+        min_ratio, r = find_min_ratio(results, yk)
+        # print(min_ratio, r)
+
+        results = create_solution(r, results, yk)
+        # print(additional_table[:, k][0])
+        print(B1[:, r])
+        for i in range(len(additional_table[:, k])):
+            # print(additional_table[:, k][i])
+            print(B1[:, r][i])
+            additional_table[:, k][i] = B1[:, r][i]
+
+        print(additional_table[:, k])
+        print(B1[:, r])
+        additional_table[:, k] = B1[:, r]
+        # for i in range(len(additional_table[:, r])):
+        #     additional_table[:,r][i][0] = B1[:,k][i]
+
+        B1 = changeB1(B1, r, yk)
+
+        print(additional_table)
+        print(results)
+        print(B1)
+        print("--------------------")
+    print(results)
+
 
 if __name__ == '__main__':
-    DISHES = get_dishes("dishes.txt")
-    put_dishes_in_matrix(DISHES, 2369, 144, 316, 67)
+    # A = np.array([[1.0, -2.0, -1.0, 0.0, 0.0], [0.0, 3.0, 4.0, 1.0, 0.0], [0.0, 6.0, 1.0, 0.0, 1.0]])
+    # results = [0.0, 6.0, 3.0]
+    # DISHES = get_dishes("dishes.txt")
+    #
+    A = np.array([[1.0, -3.0, -5.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0, 1.0, 0.0],
+                  [0.0, 3.0, 2.0, 0.0, 0.0, 1.0]])
+    results = [0.0, 4.0, 6.0, 18.0]
+    start(A, results)
