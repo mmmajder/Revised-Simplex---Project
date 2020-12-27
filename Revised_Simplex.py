@@ -3,8 +3,8 @@ import math
 import numpy as np
 from numpy.linalg import inv
 
-from Dish import Dish
 from cui import revised_simplex_cui
+from classes.Dish import Dish
 
 
 def get_additonal_table(n, matrix):
@@ -33,9 +33,8 @@ def find_min_ratio(results, y1):
 def create_solution(r, results, yk):
     R = results.tolist()
     print(R)
-    R[r] = R[r]/yk[r]
+    R[r] = R[r] / yk[r]
     for i in range(len(R)):
-
         pass
 
 

@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QRadioButton
 
 from calculating_functions import list_of_strings_in_range, get_activities, get_goals
-from stylesheet import *
+from material.stylesheet import *
 
 
 class Calculator(QWidget):
@@ -20,7 +20,7 @@ class Calculator(QWidget):
         self.setFixedSize(600, 900)
         self.setStyleSheet(GENERAL_STYLE_SHEET)
         self.setWindowTitle("Calories Calculator")
-        self.setPalette(get_palette("calories_calculator.jpg"))
+        self.setPalette(get_palette("material/calories_calculator.jpg"))
         self.setWindowIcon(get_icon())
 
     def setup_button(self):
