@@ -1,15 +1,15 @@
 class Dish:
     def __init__(self, list):
         self.name = list[0]
-        self.calories = int(list[1])
-        # in %
-        self.proteins = int(list[2])
-        self.carbs = int(list[3])
-        self.fats = int(list[4])
-        # min and max amount of food to be eaten
-        self.min = float(list[5])
-        self.max = float(list[6])
-        self.price = float(list[7])
+        # in g on 100g of food
+        self.calories = float(list[1])
+        self.proteins = float(round(list[2], 1))
+        self.carbs = float(round(list[3], 1))
+        self.fats = float(round(list[4], 1))
+        # min and max amount of food recommended to be eaten
+        self.min = float(round(list[5], 1))
+        self.max = float(round(list[6], 1))
+        self.price = float(round(list[7], 1))
 
     def to_string(self):
         return str(self.name + '|' +

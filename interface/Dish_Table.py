@@ -8,7 +8,7 @@ class Dish_Table(QTableWidget):
     def __init__(self):
         super().__init__(1, 8)
         self.setHorizontalHeaderLabels(
-            ["Name", "Calories(kcal)", "Proteins(%)", "Carbs(%)", "Fats(%)", "Min Amount(g)", "Max Amount(g)",
+            ["Name", "Calories(kcal)", "Proteins(g)", "Carbs(g)", "Fats(g)", "Min Amount(g)", "Max Amount(g)",
              "Price(€)"])
         self.horizontalHeader().setDefaultSectionSize(160)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
@@ -46,7 +46,3 @@ class Dish_Amount(QTableWidget):
     def _addRow(self):
         rowCount = self.rowCount()
         self.insertRow(rowCount)
-
-    def _save(self):
-        dishes = []
-

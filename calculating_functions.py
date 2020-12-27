@@ -5,10 +5,10 @@ from classes.Nutrients import Nutrients
 
 
 def get_nutrient_range_string(nutrient_range):
-    return "Calories: " + str(nutrient_range.calories) + "kcal\tProteins: " + str(
-        nutrient_range.proteins_min) + "-" + str(nutrient_range.proteins_max) + "g\tCarbs: " + str(
-        nutrient_range.carbs_min) + "-" + str(nutrient_range.carbs_max) + \
-           "g\tFats: " + str(nutrient_range.fats_min) + "-" + str(nutrient_range.fats_max) + "g"
+    return "Calories: " + str(round(nutrient_range.calories, 1)) + "kcal\tProteins: " + str(
+        round(nutrient_range.proteins_min, 1)) + "-" + str(round(nutrient_range.proteins_max, 1)) + "g\tCarbs: " + str(
+        round(nutrient_range.carbs_min, 1)) + "-" + str(round(nutrient_range.carbs_max, 1)) + \
+           "g\tFats: " + str(round(nutrient_range.fats_min, 1)) + "-" + str(round(nutrient_range.fats_max, 1)) + "g"
 
 
 def get_dishes(file_name):
@@ -41,7 +41,6 @@ def save_dishes(file_name, dishes):
     file = open(file_name, 'w')
     for dish in dishes:
         file.write(dish.to_string())
-        print(dish.to_string())
     file.close()
 
 
@@ -85,6 +84,7 @@ def protein_range_by_activity(weight, activity):
 
 
 def carb_range_by_activity(weight, activity):
+    weight = float(weight)
     if activity == 0:
         return weight, 3 * weight
     elif activity == 1:
@@ -105,7 +105,7 @@ def nutrient_range(age, gender, height, weight, activity, goal):
     calories = calculate_calories(age, gender, height, weight, activity, goal)
     protein_min, protein_max = protein_range(weight, activity, goal)
     carbs_min, carbs_max = carb_range_by_activity(weight, activity)
-    fats_min, fats_max = calories * 0.15, calories * 0.3
+    fats_min, fats_max = calories / 9 * 0.15, calories / 9 * 0.3
     return Nutrients(calories, protein_min, protein_max, carbs_min, carbs_max, fats_min, fats_max)
 
 
