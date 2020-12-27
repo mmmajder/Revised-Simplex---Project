@@ -3,13 +3,13 @@ class Dish:
         self.name = list[0]
         # in g on 100g of food
         self.calories = float(list[1])
-        self.proteins = float(round(list[2], 1))
-        self.carbs = float(round(list[3], 1))
-        self.fats = float(round(list[4], 1))
+        self.proteins = round(float(list[2]), 1)
+        self.carbs = round(float(list[3]), 1)
+        self.fats = round(float(list[4]), 1)
         # min and max amount of food recommended to be eaten
-        self.min = float(round(list[5], 1))
-        self.max = float(round(list[6], 1))
-        self.price = float(round(list[7], 1))
+        self.min = round(float(list[5]), 1)
+        self.max = round(float(list[6]), 1)
+        self.price = round(float(list[7]), 1)
 
     def to_string(self):
         return str(self.name + '|' +

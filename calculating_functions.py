@@ -27,7 +27,7 @@ def get_string_dishes(file_name):
         if line:
             dishes.append(line.rstrip().split('|'))
     file.close()
-    return dishes
+    return sorted(dishes, key=lambda dish: dish[0], reverse=False)
 
 
 def get_dish(name):

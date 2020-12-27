@@ -12,8 +12,8 @@ class Dish_Table(QTableWidget):
              "Price(€)"])
         self.horizontalHeader().setDefaultSectionSize(160)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        for i in range(1, 8):
+            self.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
         self.add_dishes()
         self.removeRow(0)
 
@@ -39,8 +39,8 @@ class Dish_Amount(QTableWidget):
             ["Name", "Calories(kcal)", "Proteins(g)", "Carbs(g)", "Fats(g)", "Amount(g)", "Price(€)"])
         self.horizontalHeader().setDefaultSectionSize(160)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        for i in range(1, 7):
+            self.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
         self.removeRow(0)
 
     def _addRow(self):
