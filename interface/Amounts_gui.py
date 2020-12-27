@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 
 from calculating_functions import get_dishes, save_dishes, get_dish
+from classes.Dish import Dish
 from interface.Amounts import Amounts
 
 
@@ -34,19 +35,27 @@ class Amounts_GUI(QtWidgets.QWidget):
         rowCount = self.ui.table.rowCount()
         for i in range(rowCount):
             if self.check_row(i):
-                dishes.append(get_dish(self.ui.table.item(i, 0).text()))
+                dish = get_dish(self.ui.table.item(i, 0).text())
+                if not dish:
+                    dish = Dish([self.ui.table.item(i, 0).text(), self.ui.table.item(i, 1).text(),
+                                self.ui.table.item(i, 2).text(), self.ui.table.item(i, 3).text(),
+                                self.ui.table.item(i, 4).text(), self.ui.table.item(i, 5).text(),
+                                self.ui.table.item(i, 6).text(), self.ui.table.item(i, 7).text()])
+                dishes.append(dish)
             else:
-                self.error("Error in the row " + str(i) + ".")
+                self.error("Error in the row " + str(i + 1) + ".")
                 return
         save_dishes("material/dishes.txt", dishes)
 
     def check_row(self, row):
-        if self.ui.table.item(row, 0).text().strip() == "":
-            self.error("You have to enter the name of the dish at row" + str(row) + ".")
         try:
-            x = float(self.ui.table.item(row, 1).text())
+            if self.ui.table.item(row, 0).text().strip() == "":
+                return False
+            for i in range(1, 7):
+                x = float(self.ui.table.item(row, i).text())
+            return True
         except:
-            self.error("You have to enter the double value.")
+            return False
 
 
 def start_amount(nutrient_range):

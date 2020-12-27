@@ -41,6 +41,7 @@ def save_dishes(file_name, dishes):
     file = open(file_name, 'w')
     for dish in dishes:
         file.write(dish.to_string())
+        print(dish.to_string())
     file.close()
 
 
