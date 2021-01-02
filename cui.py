@@ -4,7 +4,8 @@ from prettytable import PrettyTable
 
 from logic import get_test_example_1, generate_variables, get_initial_B1, get_table_variables, get_additional_table, \
     get_ck_zk, get_yk, find_min_ratio, changeB1, change_Xb, change_additional_table, get_test_example_2, \
-    get_test_example_3, get_test_example_4, get_test_example_5, get_test_example_6, get_test_example_res
+    get_test_example_3, get_test_example_4, get_test_example_5, get_test_example_6, get_test_example_res, \
+    get_test_example_7
 
 
 def display_start_matrix(A, results, variables):
@@ -73,49 +74,73 @@ def display_solution_table(results, yk, basis_table_variables, B1, k, r):
     table.add_column("y" + str(k + 1), yk.tolist()[0])
     print(table)
 
-    # results[r] = results[r]/yk.tolist()[0][r]
-    # for i in range(len(results)):
-
 
 def revised_simplex_cui(A, results):
-    print(A, results)
-    variables = generate_variables(A)
-    print(variables)
-    display_start_matrix(A, results, generate_variables(A))
-
-    B1 = get_initial_B1(A)
-    display_B1(B1)
-    additional_table_variables, basis_table_variables = get_table_variables(A, variables)
+    B1, additional_table, additional_table_variables, basis_table_variables = phase1(A, results)
     num_of_iter = 0
-    additional_table = get_additional_table(len(additional_table_variables), A)
     while True:
-        num_of_iter += 1
-        print("\n\n\n" + str(num_of_iter) + ". ITERATION")
-        display_main_table_not_filled(B1, additional_table, additional_table_variables, basis_table_variables, results)
-        ck_zk, k = get_ck_zk(B1, additional_table)
-        print(ck_zk, k)
+        num_of_iter = display_iteration_number(num_of_iter)
+        ck_zk, k = step3(B1, additional_table, additional_table_variables, basis_table_variables, num_of_iter, results)
         if ck_zk < 0:
             break
-        print("Ck-Zk=Max{(Cj-Zj)>0}")
-        print("c" + str(k + 1) + "-z" + str(k + 1) + "=" + str(ck_zk))
-        yk = get_yk(B1, additional_table, k)
-        display_yk(yk, k)
-        min_ratio, r, list_for_min_ratio = find_min_ratio(results, yk)
-        print("XBr/Yrk = Min{XBi/Yik, Yik>0}")
-        print("XB" + str(r) + "/Y" + str(r) + str(k + 1) + "=" + str(min_ratio))
-        display_main_table_filled(B1, additional_table, additional_table_variables, basis_table_variables, results, yk,
-                                  k, list_for_min_ratio)
-        print("We are going to change " + basis_table_variables[r] + " and " + additional_table_variables[k])
-        display_solution_table(results, yk, basis_table_variables, B1, k, r)
-        additional_table, additional_table_variables, basis_table_variables = change_additional_table(additional_table,
-                                                                                                      additional_table_variables,
-                                                                                                      B1,
-                                                                                                      basis_table_variables,
-                                                                                                      r, k)
+        list_for_min_ratio, r, yk = step4(B1, additional_table, k, results)
+        additional_table, additional_table_variables, basis_table_variables = step5(B1, additional_table,
+                                                                                    additional_table_variables,
+                                                                                    basis_table_variables, k,
+                                                                                    list_for_min_ratio, r, results, yk)
         B1 = changeB1(B1, r, yk)
         results = change_Xb(results, r, yk)
 
     print(results)
+
+
+def step5(B1, additional_table, additional_table_variables, basis_table_variables, k, list_for_min_ratio, r, results,
+          yk):
+    display_main_table_filled(B1, additional_table, additional_table_variables, basis_table_variables, results, yk,
+                              k, list_for_min_ratio)
+    print("We are going to change " + basis_table_variables[r] + " and " + additional_table_variables[k])
+    display_solution_table(results, yk, basis_table_variables, B1, k, r)
+    additional_table, additional_table_variables, basis_table_variables = change_additional_table(additional_table,
+                                                                                                  additional_table_variables,
+                                                                                                  B1,
+                                                                                                  basis_table_variables,
+                                                                                                  r, k)
+    return additional_table, additional_table_variables, basis_table_variables
+
+
+def step4(B1, additional_table, k, results):
+    yk = get_yk(B1, additional_table, k)
+    display_yk(yk, k)
+    min_ratio, r, list_for_min_ratio = find_min_ratio(results, yk)
+    print("XBr/Yrk = Min{XBi/Yik, Yik>0}")
+    print("XB" + str(r) + "/Y" + str(r) + str(k + 1) + "=" + str(min_ratio))
+    return list_for_min_ratio, r, yk
+
+
+def step3(B1, additional_table, additional_table_variables, basis_table_variables, num_of_iter, results):
+    ck_zk, k = get_ck_zk(B1, additional_table)
+    display_main_table_not_filled(B1, additional_table, additional_table_variables, basis_table_variables, results)
+    print("Ck-Zk=Max{(Cj-Zj)>0}")
+    print("c" + str(k + 1) + "-z" + str(k + 1) + "=" + str(ck_zk))
+    return ck_zk, k
+
+
+def display_iteration_number(num_of_iter):
+    num_of_iter += 1
+    print("\n\n\n" + str(num_of_iter) + ". ITERATION")
+    return num_of_iter
+
+
+def phase1(A, results):
+    print(A, results)
+    variables = generate_variables(A)
+    print(variables)
+    display_start_matrix(A, results, generate_variables(A))
+    B1 = get_initial_B1(A)
+    display_B1(B1)
+    additional_table_variables, basis_table_variables = get_table_variables(A, variables)
+    additional_table = get_additional_table(len(additional_table_variables), A)
+    return B1, additional_table, additional_table_variables, basis_table_variables
 
 
 def integrated_simplex():
@@ -125,11 +150,12 @@ def integrated_simplex():
     #             [1.0, 1.0]]
     # rhs_ineq = [2, 3, 6]
 
-    obj = [2.0, -3.0]
-    lhs_ineq = [[1.0, 1.0],
-                [1.0, -1.0]]
-    rhs_ineq = [4,6]
+    # obj = [-2.0, 3.0]
+    # lhs_ineq = [[1.0, 1.0],
+    #             [1.0, -1.0]]
+    # rhs_ineq = [4, 6]
 
+    #
     # obj = [-40.0, -200.0, -50.0]
     # lhs_ineq = [[-100.0, -150.0, -25.0],
     #             [-10.0, -25.0, -15.0],
@@ -143,6 +169,22 @@ def integrated_simplex():
     #             [0.0, 0.0, -1.0]]
     # rhs_ineq = [-2369.0, -144.0, 316.0, 67.0, 300.0, -50.0, 500.0, -50.0, 200.0, -10.0]
 
+    obj = [0.4, 1.5, 0.8]
+    lhs_ineq = [[-84.0, -120.0, -385.0],
+                [1.3, 2.2, 15.5],
+                [-1.3, -2.2, -15.5],
+                [3.5, 2.2, 72.0],
+                [-3.5, -2.2, -72.0],
+                [0.1, 12.1, 2.5],
+                [-0.1, -12.1, -2.5],
+                [1.0, 0.0, 0.0],
+                [-1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, -1.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 0.0, -1.0]]
+    rhs_ineq = [-2760.0, 204.0, -122.4, 425.0, -255.0, 92.0, -46.0, 2000.0, -0.5, 1000.5, -0.2, 1000.0, -0.3]
+
     opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
                   method="revised simplex")
     return opt
@@ -151,14 +193,17 @@ def integrated_simplex():
 if __name__ == '__main__':
     # A, results = get_test_example_1()
     # A, results = get_test_example_2()
+
     # A, results = get_test_example_4()
+    # revised_simplex_cui(A, results)
+    # print("-"*100)
     # A, results = get_test_example_5()
-    A, results = get_test_example_3()
+    # A, results = get_test_example_7()
+
+    A, results = get_test_example_res()
+
     # A, results = get_test_example_3()
-    # A, results = get_test_example_res()
-
-    opt = integrated_simplex()
-
     revised_simplex_cui(A, results)
+    print("-" * 100)
+    opt = integrated_simplex()
     print(opt)
-
