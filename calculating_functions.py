@@ -105,7 +105,7 @@ def nutrient_range(age, gender, height, weight, activity, goal):
     calories = calculate_calories(age, gender, height, weight, activity, goal)
     protein_min, protein_max = protein_range(weight, activity, goal)
     carbs_min, carbs_max = carb_range_by_activity(weight, activity)
-    fats_min, fats_max = calories / 9 * 0.15, calories / 9 * 0.3
+    fats_min, fats_max = round(calories / 9 * 0.15, 1), round(calories / 9 * 0.3, 1)
     return Nutrients(calories, protein_min, protein_max, carbs_min, carbs_max, fats_min, fats_max)
 
 
