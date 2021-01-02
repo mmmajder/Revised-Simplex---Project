@@ -74,8 +74,6 @@ def example_parameters2():
                   [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
                   [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0]])
     b = np.array([2760.0, 204.0, 122.4, 425.0, 255.0, 92.0, 46.0, 2000.0, 0.5, 1000.5, 0.2, 1000.0, 0.3])
-    opt = linprog(c=c, A_ub=A, b_ub=b, method="revised simplex")
-    print(opt)
     return c, b, A
 
 
@@ -183,7 +181,7 @@ if __name__ == '__main__':
     # c, b, A = example_parameters1()
     # exmaple_parameters1_2()
 
-    ugradjeni()
-    # c, b, A = example_parameters2()
+    # ugradjeni()
+    c, b, A = example_parameters2()
     # c,b,A = example_parameters3()
-    # revised_simplex_method(c, b, A)
+    revised_simplex_method(c, b, A)
