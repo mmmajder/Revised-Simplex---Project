@@ -3,6 +3,7 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 
+from andji import calculate_amounts
 from calculating_functions import get_dishes, save_dishes, get_dish
 from classes.Dish import Dish
 from interface.Amounts import Amounts
@@ -12,8 +13,10 @@ class Amounts_GUI(QtWidgets.QWidget):
     def __init__(self, nutrient_range, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Amounts(nutrient_range)
+        self.nutrient_range = nutrient_range
         self.ui.select.clicked.connect(self.selected)
         self.ui.save_changes.clicked.connect(self.save_changes_to_file)
+        self.ui.button_calculate.clicked.connect(self.calculate)
 
     def error(self, text):
         QtWidgets.QMessageBox.question(self, 'Error', text,
@@ -73,6 +76,17 @@ class Amounts_GUI(QtWidgets.QWidget):
         if float(self.ui.table.item(row, 6).text()) < float(self.ui.table.item(row, 5).text()):
             return False
         return True
+
+    def get_selected_dishes(self):
+        dishes = []
+        for row in range(self.ui.dish_amount_table.rowCount()):
+            dishes.append(get_dish(self.ui.dish_amount_table.item(row, 0).text()))
+        return dishes
+
+    def calculate(self):
+        selected_dishes = self.get_selected_dishes()
+        print(selected_dishes)
+        calculate_amounts(selected_dishes, self.nutrient_range)
 
 
 def start_amount(nutrient_range):

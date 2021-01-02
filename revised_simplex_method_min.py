@@ -1,4 +1,5 @@
 from itertools import combinations
+
 import numpy as np
 from scipy.optimize import linprog
 
@@ -36,7 +37,6 @@ def exmaple_parameters1_2():
 
 def ugradjeni():
     obj = [0.4, 1.5, 0.8]
-
     lhs_ineq = [[-84.0, -120.0, -385.0],
                 [1.3, 2.2, 15.5],
                 [-1.3, -2.2, -15.5],
@@ -51,14 +51,14 @@ def ugradjeni():
                 [0.0, 0.0, 1.0],
                 [0.0, 0.0, -1.0]]
 
-    rhs_ineq = [2760.0, 204.0, 122.4, 425.0, 255.0, 92.0, 46.0, 2000.0, 0.5, 1000.5, 0.2, 1000.0, 0.3]
+    rhs_ineq = [-2760.0, 204.0, -122.4, 425.0, -255.0, 92.0, -46.0, 2000.0, -0.5, 1000.5, -0.2, 1000.0, -0.3]
 
     opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
     method = "revised simplex")
     print(opt)
 
 
-def example_parameters2():
+def our_example():
     c = np.array([0.4, 1.5, 0.8, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     A = np.array([[84.0, 120.0, 385.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                   [1.3, 2.2, 15.5, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -138,7 +138,6 @@ def phase_one(b, A):
             if np.all((XB > 0)):
                 print(B)
                 return A_on_B, A_on_B_inv, XB, list(B)
-
         except:
             # print("except")
             continue
@@ -157,13 +156,13 @@ def revised_simplex_method(c, b, A):
         if i != 0:
             A_on_B = get_A_on_B(A, B)
             XB = A_on_B_inv.dot(b)
+            #A_on_B_inv = np.linalg.inv(A_on_B)
         pi = cb.dot(A_on_B_inv)
 
         k = get_position_of_pivot(B, A, c, pi)
         if k == -1:
             break
         alfa = A_on_B_inv.dot(A[:, k])
-        print(alfa)
         postion_j = get_min_XB_div_alfaB(XB, alfa)
         B[postion_j] = k
 
@@ -180,8 +179,9 @@ if __name__ == '__main__':
     # example_parameters_2()
     # c, b, A = example_parameters1()
     # exmaple_parameters1_2()
-
     # ugradjeni()
-    c, b, A = example_parameters2()
-    # c,b,A = example_parameters3()
+    c, b, A = our_example()
     revised_simplex_method(c, b, A)
+    #ugradjeni()
+    # c, b, A = example_parameters2()
+    # c,b,A = example_parameters3()
