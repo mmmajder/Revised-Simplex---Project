@@ -9,4 +9,4 @@ class Nutrients:
         self.fats_max = fats_max
 
     def to_array(self):
-        return [self.calories, -self.proteins_min, self.proteins_max, -self.carbs_min, self.carbs_max, -self.fats_min, self.carbs_min]
+        return [-self.calories, -self.proteins_min, self.proteins_max, -self.carbs_min, self.carbs_max, -self.fats_min, self.carbs_min]

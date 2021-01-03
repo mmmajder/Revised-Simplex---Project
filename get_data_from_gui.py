@@ -1,6 +1,6 @@
-from itertools import combinations
-
 import numpy as np
+
+from revised_simplex_method_min import revised_simplex_method
 
 
 def get_prices_array(selected_dishes):
@@ -17,7 +17,7 @@ def get_edges_array(selected_dishes, nutrient_range):
     for dish in selected_dishes:
         list.append(-dish.min)
         list.append(dish.max)
-    return list
+    return np.array(list)
 
 
 def get_nutrient_matrix(selected_dishes):
@@ -26,7 +26,7 @@ def get_nutrient_matrix(selected_dishes):
     cols = 7 + 3 * n
     matrix = np.zeros((rows, cols))
     for j in range(n):
-        matrix[0][j] = selected_dishes[j].calories
+        matrix[0][j] = -selected_dishes[j].calories
         matrix[1][j] = -selected_dishes[j].proteins
         matrix[2][j] = selected_dishes[j].proteins
         matrix[3][j] = -selected_dishes[j].carbs
@@ -42,17 +42,6 @@ def get_nutrient_matrix(selected_dishes):
         matrix[i][i + n] = 1
     return np.array(matrix)
 
-def get_list_B(b):
-    return list(range(0, len(b)))
-
-
-def get_A_on_B(A, list_B):
-    return A[:, list_B]
-
-
-def get_cb(c, list_B):
-    return c[list(list_B)]
-
 
 def calculate_amounts(selected_dishes, nutrient_range):
     c = get_prices_array(selected_dishes)
@@ -61,18 +50,5 @@ def calculate_amounts(selected_dishes, nutrient_range):
     print("c = ", c)
     print("b = ", b)
     print("A = ", A)
-    A_on_B, A_on_B_inv, XB, l = phase_one(b, A)
-    print("B = ", A_on_B)
+    revised_simplex_method(c, b, A)
 
-def phase_one(b, A):
-    list_of_variables = list(range(len(A[0])))
-    for B in combinations(list_of_variables, len(A)):
-        A_on_B = get_A_on_B(A, B)
-        try:
-            A_on_B_inv = np.linalg.inv(A_on_B)
-            XB = A_on_B_inv.dot(b)
-            if np.all((XB > 0)):
-                return A_on_B, A_on_B_inv, XB, list(B)
-        except:
-            continue
-    return False

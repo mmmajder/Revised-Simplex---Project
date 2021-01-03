@@ -3,9 +3,9 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 
-from andji import calculate_amounts
 from calculating_functions import get_dishes, save_dishes, get_dish
 from classes.Dish import Dish
+from get_data_from_gui import calculate_amounts
 from interface.Amounts import Amounts
 
 
@@ -85,7 +85,6 @@ class Amounts_GUI(QtWidgets.QWidget):
 
     def calculate(self):
         selected_dishes = self.get_selected_dishes()
-        print(selected_dishes)
         calculate_amounts(selected_dishes, self.nutrient_range)
 
 
