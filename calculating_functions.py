@@ -133,4 +133,4 @@ def get_total_price(selected_dishes, amounts):
         print("error")
     for i in range(len(amounts)):
         total_price += amounts[i] * selected_dishes[i].price
-    return total_price
+    return round(total_price, 2)

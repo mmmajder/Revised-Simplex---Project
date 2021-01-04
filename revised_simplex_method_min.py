@@ -170,6 +170,8 @@ def revised_simplex_method(c, b, A):
         B[postion_j] = k
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
         XB = A_on_B_inv.dot(b)
+    print(B)
+    print(XB)
     return [B, XB]
 
 if __name__ == '__main__':

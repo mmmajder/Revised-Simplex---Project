@@ -16,7 +16,7 @@ def get_prices_array(selected_dishes):
 def get_edges_array(selected_dishes, nutrient_range):
     list = nutrient_range.to_array()
     for dish in selected_dishes:
-        list.append(-dish.min/100)
+        list.append(-dish.min / 100)
     return np.array(list)
 
 
@@ -44,17 +44,26 @@ def get_nutrient_matrix(selected_dishes):
     return np.array(matrix)
 
 
-# B = [5, 6, 3]
-# XB = [56, 75, 34]
-def correct_order(B, XB):
-    return XB
+def find_index_in_list(B, i):
+    for j in range(len(B)):
+        if B[j] == i:
+            return j
+    return -1
+
+
+def correct_order(B, XB, n):
+    list = []
+    for i in range(n):
+        position = find_index_in_list(B, i)
+        list.append(round(XB[position], 2))
+    return list
 
 
 def get_amounts_of_selected_dishes(selected_dishes, nutrient_range):
     solution = calculate_amounts(selected_dishes, nutrient_range)
     if not solution:
         return False
-    return correct_order(solution[0], solution[1])
+    return correct_order(solution[0], solution[1], len(selected_dishes))
 
 
 def calculate_amounts(selected_dishes, nutrient_range):
@@ -91,7 +100,7 @@ def get_nutrient_matrix_za_ugradjeni(selected_dishes):
         matrix[4][j] = selected_dishes[j].carbs
         matrix[5][j] = -selected_dishes[j].fats
         matrix[6][j] = selected_dishes[j].fats
-        matrix[7+j][j] = -1
+        matrix[7 + j][j] = -1
     return np.array(matrix)
 
 
