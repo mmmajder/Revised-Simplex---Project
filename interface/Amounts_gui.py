@@ -51,11 +51,11 @@ class Amounts_GUI(QtWidgets.QWidget):
             return Dish([self.ui.table.item(i, 0).text(), self.ui.table.item(i, 1).text(),
                          self.ui.table.item(i, 2).text(), self.ui.table.item(i, 3).text(),
                          self.ui.table.item(i, 4).text(), self.ui.table.item(i, 5).text(),
-                         self.ui.table.item(i, 6).text(), self.ui.table.item(i, 7).text()])
+                         self.ui.table.item(i, 6).text()])
         return dish
 
     def check_row(self, row):
-        return self.empty_name_check(row) and self.correct_float_values(row) and self.min_and_max_amount_check(row)
+        return self.empty_name_check(row) and self.correct_float_values(row)
 
     def empty_name_check(self, row):
         if self.ui.table.item(row, 0).text().strip() == "":
@@ -71,11 +71,6 @@ class Amounts_GUI(QtWidgets.QWidget):
             return True
         except:
             return False
-
-    def min_and_max_amount_check(self, row):
-        if float(self.ui.table.item(row, 6).text()) < float(self.ui.table.item(row, 5).text()):
-            return False
-        return True
 
     def get_selected_dishes(self):
         dishes = []

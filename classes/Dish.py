@@ -8,8 +8,7 @@ class Dish:
         self.fats = round(float(list[4]), 1)
         # min and max amount of food recommended to be eaten
         self.min = round(float(list[5]), 1)
-        self.max = round(float(list[6]), 1)
-        self.price = round(float(list[7]), 1)
+        self.price = round(float(list[6]), 1)
 
     def to_string(self):
         return str(self.name + '|' +
@@ -18,5 +17,4 @@ class Dish:
                    str(self.carbs) + '|' +
                    str(self.fats) + '|' +
                    str(self.min) + '|' +
-                   str(self.max) + '|' +
                    str(self.price) + '\n')
