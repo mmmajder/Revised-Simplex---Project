@@ -142,16 +142,13 @@ def get_combination_of_variables(A, i):
 def phase_one(b, A):
     list_of_variables = list(range(len(A[0])))
     for B in combinations(list_of_variables, len(A)):
-        print(B)
         A_on_B = get_A_on_B(A, B)
         try:
             A_on_B_inv = np.linalg.inv(A_on_B)
             XB = A_on_B_inv.dot(b)
             if np.all((XB > 0)):
-                # print(B)
                 return A_on_B, A_on_B_inv, XB, list(B)
         except:
-            # print("except")
             continue
     return False
 
@@ -161,38 +158,16 @@ def revised_simplex_method(c, b, A):
         A_on_B, A_on_B_inv, XB, B = phase_one(b, A)
     else:
         print("nema resenja")
-        return
-    i = 0
+        return []
     while True:
-        print(B)
         cb = get_cb(c, B)
         pi = cb.dot(A_on_B_inv)
-
         k = get_position_of_pivot(B, A, c, pi)
         if k == -1:
             break
         alfa = A_on_B_inv.dot(A[:, k])
         postion_j = get_min_pos_XB_div_alfaB(XB, alfa)
-        # postion_j = get_min_XB_div_alfaB(XB, alfa)
         B[postion_j] = k
-
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
-        # A_on_B = get_A_on_B(A, B)
         XB = A_on_B_inv.dot(b)
-
-    print("-" * 100)
-    print(B)
-    print(XB)
-
-
-if __name__ == '__main__':
-    # c, b, A = example_parameters()
-    # example_parameters_2()
-    # c, b, A = example_parameters1()
-    # exmaple_parameters1_2()
-    # ugradjeni()
-    c, b, A = our_example()
-    revised_simplex_method(c, b, A)
-    ugradjeni()
-    # c, b, A = example_parameters2()
-    # c,b,A = example_parameters3()
+    return [B, XB]

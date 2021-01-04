@@ -44,19 +44,63 @@ def get_nutrient_matrix(selected_dishes):
     return np.array(matrix)
 
 
+# B = [5, 6, 3]
+# XB = [56, 75, 34]
+def correct_order(B, XB):
+    return XB
+
+
+def get_amounts_of_selected_dishes(selected_dishes, nutrient_range):
+    solution = calculate_amounts(selected_dishes, nutrient_range)
+    if not solution:
+        return False
+    return correct_order(solution[0], solution[1])
+
+
 def calculate_amounts(selected_dishes, nutrient_range):
     c = get_prices_array(selected_dishes)
     b = get_edges_array(selected_dishes, nutrient_range)
     A = get_nutrient_matrix(selected_dishes)
+    print("THEIR SIMPLEX")
+    ugradjeni(selected_dishes, nutrient_range)
+    print("\n\n\nOUR SIMPLEX")
     print("c = ", c)
     print("b = ", b)
     print("A = ", A)
-    revised_simplex_method(c, b, A)
+    return revised_simplex_method(c, b, A)
+
+
+def get_prices_array_za_ugradjeni(selected_dishes):
+    prices = []
+    for dish in selected_dishes:
+        prices.append(dish.price)
+    return np.array(prices)
+
+
+def get_nutrient_matrix_za_ugradjeni(selected_dishes):
+    n = len(selected_dishes)
+    print("n = ", n)
+    rows = 7 + n
+    cols = n
+    matrix = np.zeros((rows, cols))
+    for j in range(n):
+        matrix[0][j] = -selected_dishes[j].calories
+        matrix[1][j] = -selected_dishes[j].proteins
+        matrix[2][j] = selected_dishes[j].proteins
+        matrix[3][j] = -selected_dishes[j].carbs
+        matrix[4][j] = selected_dishes[j].carbs
+        matrix[5][j] = -selected_dishes[j].fats
+        matrix[6][j] = selected_dishes[j].fats
+    return np.array(matrix)
+
 
 def ugradjeni(selected_dishes, nutrient_range):
     c = get_prices_array_za_ugradjeni(selected_dishes)
     b = get_edges_array(selected_dishes, nutrient_range)
-    A = np.array([[1.0, -1.0, 1.0, 1.0, 0.0], [-1.0, 1.0, 1.0, 0.0, 1.0]])
+    A = get_nutrient_matrix_za_ugradjeni(selected_dishes)
     opt = linprog(c=c, A_ub=A, b_ub=b, method="revised simplex")
+    print("c = ", c)
+    print("b = ", b)
+    print("A = ", A)
     print(" opt ", opt)
     return c, b, A

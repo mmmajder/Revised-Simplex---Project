@@ -125,3 +125,12 @@ def list_of_strings_in_range(a, b, text):
     for i in range(a, b):
         list.append(str(i) + text)
     return list
+
+
+def get_total_price(selected_dishes, amounts):
+    total_price = 0
+    if len(selected_dishes) != len(amounts):
+        print("error")
+    for i in range(len(amounts)):
+        total_price += amounts[i] * selected_dishes[i].price
+    return total_price

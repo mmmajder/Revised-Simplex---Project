@@ -1,12 +1,13 @@
 from PyQt5.QtWidgets import QTableWidget, \
     QTableWidgetItem, QHeaderView
+from PyQt5.uic.properties import QtGui
 
 from calculating_functions import get_string_dishes
 
 
 class Dish_Table(QTableWidget):
     def __init__(self):
-        super().__init__(1, 8)
+        super().__init__(1, 7)
         self.setHorizontalHeaderLabels(
             ["Name", "Calories(kcal)", "Proteins(g)", "Carbs(g)", "Fats(g)", "Min Amount(g)", "Price(€)"])
         self.horizontalHeader().setDefaultSectionSize(160)
@@ -14,6 +15,7 @@ class Dish_Table(QTableWidget):
         for i in range(1, 7):
             self.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
         self.add_dishes()
+        self.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.removeRow(0)
 
     def _addRow(self):

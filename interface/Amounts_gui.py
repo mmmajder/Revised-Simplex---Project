@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 
-from calculating_functions import get_dishes, save_dishes, get_dish
+from calculating_functions import get_dishes, save_dishes, get_dish, get_total_price
 from classes.Dish import Dish
 from get_data_from_gui import calculate_amounts
 from interface.Amounts import Amounts
@@ -80,7 +80,21 @@ class Amounts_GUI(QtWidgets.QWidget):
 
     def calculate(self):
         selected_dishes = self.get_selected_dishes()
-        calculate_amounts(selected_dishes, self.nutrient_range)
+        amounts = calculate_amounts(selected_dishes, self.nutrient_range)
+        if not amounts:
+            self.error("You cannot satisfy all your daily needs with this choice of foods.")
+        else:
+            for row in range(self.ui.table.rowCount()):
+                self.set_amount_table_row(row, selected_dishes[row], amounts[row])
+            self.ui.total.setText("Total price: " + get_total_price(selected_dishes, amounts) + "€")
+
+    def set_amount_table_row(self, row, dish, amount):
+        self.ui.dish_amount_table.setItem(row, 2, QTableWidgetItem(dish.calories * amount))
+        self.ui.dish_amount_table.setItem(row, 3, QTableWidgetItem(dish.proteins * amount))
+        self.ui.dish_amount_table.setItem(row, 4, QTableWidgetItem(dish.carbs * amount))
+        self.ui.dish_amount_table.setItem(row, 5, QTableWidgetItem(dish.fats * amount))
+        self.ui.dish_amount_table.setItem(row, 6, QTableWidgetItem(amount))
+        self.ui.dish_amount_table.setItem(row, 7, QTableWidgetItem(dish.price * amount))
 
 
 def start_amount(nutrient_range):
