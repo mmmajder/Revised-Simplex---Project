@@ -71,7 +71,7 @@ def our_example():
     # b = np.array([-1590, -66, 88, -165, 275, -26.5, 165, -50, -20, -30])
     # b = np.array([-2360., -67.2, 100.8, -84., 252., -39.3, 84., -50., -20.,
     #               -30.])
-    b = np.array([-2760.0, 204.0, -122.4, 425.0, -255.0, 92.0, -46.0, -0.5, -0.2, -0.3])
+    b = np.array([-2760.0, 204.0, -122.4, 425.0, -255.0, 255.0, -46.0, -0.5, -0.2, -0.3])
     return c, b, A
 
 
@@ -171,3 +171,7 @@ def revised_simplex_method(c, b, A):
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
         XB = A_on_B_inv.dot(b)
     return [B, XB]
+
+if __name__ == '__main__':
+    c, b, A = our_example()
+    revised_simplex_method(c,b,A)
