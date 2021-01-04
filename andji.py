@@ -17,7 +17,7 @@ def get_edges_array(selected_dishes, nutrient_range):
     for dish in selected_dishes:
         list.append(-dish.min)
         list.append(dish.max)
-    return list
+    return np.array(list)
 
 
 def get_nutrient_matrix(selected_dishes):

@@ -1,3 +1,4 @@
+import math
 from itertools import combinations
 
 import numpy as np
@@ -106,8 +107,20 @@ def get_position_of_pivot(list_B, A, c, pi):
                 return position
     return -1
 
+def get_min_pos_XB_div_alfaB(XB, alfa):
+    min =math.inf
+    position_min = -1
+    for i in range(len(XB)):
+        if alfa[i]<=10e-6:
+            continue
+        if XB[i]/alfa[i]>0:
+            if XB[i]/alfa[i]<min:
+                min = XB[i]/alfa[i]
+                position_min=i
+    return position_min
 
 def get_min_XB_div_alfaB(XB, alfa):
+
     min_XB_dev_alfaB = min(XB / alfa)
     position = np.where(XB / alfa == min_XB_dev_alfaB)
     return position[0][0]
@@ -153,21 +166,19 @@ def revised_simplex_method(c, b, A):
     while True:
         print(B)
         cb = get_cb(c, B)
-        if i != 0:
-            A_on_B = get_A_on_B(A, B)
-            XB = A_on_B_inv.dot(b)
-            #A_on_B_inv = np.linalg.inv(A_on_B)
         pi = cb.dot(A_on_B_inv)
 
         k = get_position_of_pivot(B, A, c, pi)
         if k == -1:
             break
         alfa = A_on_B_inv.dot(A[:, k])
-        postion_j = get_min_XB_div_alfaB(XB, alfa)
+        postion_j = get_min_pos_XB_div_alfaB(XB, alfa)
+        # postion_j = get_min_XB_div_alfaB(XB, alfa)
         B[postion_j] = k
 
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
-        i += 1
+        # A_on_B = get_A_on_B(A, B)
+        XB = A_on_B_inv.dot(b)
 
     print("-" * 100)
     print(B)
@@ -182,6 +193,6 @@ if __name__ == '__main__':
     # ugradjeni()
     c, b, A = our_example()
     revised_simplex_method(c, b, A)
-    #ugradjeni()
+    ugradjeni()
     # c, b, A = example_parameters2()
     # c,b,A = example_parameters3()
