@@ -8,13 +8,12 @@ class Dish_Table(QTableWidget):
     def __init__(self):
         super().__init__(1, 7)
         self.setHorizontalHeaderLabels(
-            ["Name", "Calories(kcal)", "Proteins(g)", "Carbs(g)", "Fats(g)", "Min Amount(g)", "Price(€)"])
+            ["Name", "Calories(kcal/100g)", "Proteins(g/100g)", "Carbs(g/100g)", "Fats(g/100g)", "Min Amount(g)", "Price(€/100g)"])
         self.horizontalHeader().setDefaultSectionSize(160)
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         for i in range(1, 7):
             self.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
         self.add_dishes()
-        #self.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.removeRow(0)
 
     def _addRow(self):

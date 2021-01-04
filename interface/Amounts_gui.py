@@ -15,6 +15,7 @@ class Amounts_GUI(QtWidgets.QWidget):
         self.ui = Amounts(nutrient_range)
         self.nutrient_range = nutrient_range
         self.ui.select.clicked.connect(self.selected)
+        self.ui.deselect.clicked.connect(self.deselected)
         self.ui.save_changes.clicked.connect(self.save_changes_to_file)
         self.ui.button_calculate.clicked.connect(self.calculate)
 
@@ -28,6 +29,10 @@ class Amounts_GUI(QtWidgets.QWidget):
             self.error("You have to save changes first.")
         else:
             self.add_dish_to_amount_table(current_row)
+
+    def deselected(self):
+        current_row = self.ui.dish_amount_table.currentRow()
+        self.ui.dish_amount_table.removeRow(current_row)
 
     def add_dish_to_amount_table(self, current_row):
         rowCount = self.ui.dish_amount_table.rowCount()
@@ -81,7 +86,6 @@ class Amounts_GUI(QtWidgets.QWidget):
     def calculate(self):
         selected_dishes = self.get_selected_dishes()
         amounts = get_amounts_of_selected_dishes(selected_dishes, self.nutrient_range)
-        print(amounts)
         if not amounts:
             self.error("You cannot satisfy all your daily needs with this choice of foods.")
         else:

@@ -43,6 +43,10 @@ class Amounts(QWidget):
         self.select.setStyleSheet(BUTTON_STYLE_SHEET)
         buttonLayout.addWidget(self.select)
 
+        self.deselect = QPushButton('Deselect Dish')
+        self.deselect.setStyleSheet(BUTTON_STYLE_SHEET)
+        buttonLayout.addWidget(self.deselect)
+
         button_new = QPushButton('Add New Dish')
         button_new.setStyleSheet(BUTTON_STYLE_SHEET)
         button_new.clicked.connect(self.table._addRow)
