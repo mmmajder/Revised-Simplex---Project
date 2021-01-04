@@ -16,7 +16,7 @@ def get_prices_array(selected_dishes):
 def get_edges_array(selected_dishes, nutrient_range):
     list = nutrient_range.to_array()
     for dish in selected_dishes:
-        list.append(-dish.min)
+        list.append(-dish.min/100)
     return np.array(list)
 
 
@@ -51,8 +51,11 @@ def calculate_amounts(selected_dishes, nutrient_range):
     print("c = ", c)
     print("b = ", b)
     print("A = ", A)
-    revised_simplex_method(c, b, A)
+    B, XB = revised_simplex_method(c, b, A)
+    # dobavljani podaci
     ugradjeni(selected_dishes, nutrient_range)
+
+
 
 
 def get_prices_array_za_ugradjeni(selected_dishes):
@@ -76,6 +79,7 @@ def get_nutrient_matrix_za_ugradjeni(selected_dishes):
         matrix[4][j] = selected_dishes[j].carbs
         matrix[5][j] = -selected_dishes[j].fats
         matrix[6][j] = selected_dishes[j].fats
+        matrix[7+j][j] = -1
     return np.array(matrix)
 
 

@@ -71,7 +71,7 @@ def our_example():
     # b = np.array([-1590, -66, 88, -165, 275, -26.5, 165, -50, -20, -30])
     # b = np.array([-2360., -67.2, 100.8, -84., 252., -39.3, 84., -50., -20.,
     #               -30.])
-    b = np.array([-2760.0, 204.0, -122.4, 425.0, -255.0, 92.0, -46.0, -0.5, -0.2, -0.3])
+    b = np.array([-2760.0, 204.0, -122.4, 425.0, -255.0, 255.0, -46.0, -0.5, -0.2, -0.3])
     return c, b, A
 
 
@@ -104,17 +104,6 @@ def get_position_of_pivot(list_B, A, c, pi):
                 return position
     return -1
 
-def get_min_pos_XB_div_alfaB(XB, alfa):
-    min =math.inf
-    position_min = -1
-    for i in range(len(XB)):
-        if alfa[i]<=10e-6:
-            continue
-        if XB[i]/alfa[i]>0:
-            if XB[i]/alfa[i]<min:
-                min = XB[i]/alfa[i]
-                position_min=i
-    return position_min
 
 def get_min_pos_XB_div_alfaB(XB, alfa):
     min = math.inf
@@ -130,7 +119,6 @@ def get_min_pos_XB_div_alfaB(XB, alfa):
 
 
 def get_min_XB_div_alfaB(XB, alfa):
-
     min_XB_dev_alfaB = min(XB / alfa)
     position = np.where(XB / alfa == min_XB_dev_alfaB)
     return position[0][0]
@@ -154,16 +142,13 @@ def get_combination_of_variables(A, i):
 def phase_one(b, A):
     list_of_variables = list(range(len(A[0])))
     for B in combinations(list_of_variables, len(A)):
-        print(B)
         A_on_B = get_A_on_B(A, B)
         try:
             A_on_B_inv = np.linalg.inv(A_on_B)
             XB = A_on_B_inv.dot(b)
             if np.all((XB > 0)):
-                # print(B)
                 return A_on_B, A_on_B_inv, XB, list(B)
         except:
-            # print("except")
             continue
     return False
 
@@ -173,38 +158,24 @@ def revised_simplex_method(c, b, A):
         A_on_B, A_on_B_inv, XB, B = phase_one(b, A)
     else:
         print("nema resenja")
-        return
-    i = 0
+        return [], []
     while True:
-        print(B)
         cb = get_cb(c, B)
         pi = cb.dot(A_on_B_inv)
-
         k = get_position_of_pivot(B, A, c, pi)
         if k == -1:
             break
         alfa = A_on_B_inv.dot(A[:, k])
         postion_j = get_min_pos_XB_div_alfaB(XB, alfa)
-        # postion_j = get_min_XB_div_alfaB(XB, alfa)
         B[postion_j] = k
-
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
-        # A_on_B = get_A_on_B(A, B)
         XB = A_on_B_inv.dot(b)
 
     print("-" * 100)
     print(B)
     print(XB)
-
+    return B,XB
 
 if __name__ == '__main__':
-    # c, b, A = example_parameters()
-    # example_parameters_2()
-    # c, b, A = example_parameters1()
-    # exmaple_parameters1_2()
-    # ugradjeni()
     c, b, A = our_example()
-    revised_simplex_method(c, b, A)
-    ugradjeni()
-    # c, b, A = example_parameters2()
-    # c,b,A = example_parameters3()
+    revised_simplex_method(c,b,A)
