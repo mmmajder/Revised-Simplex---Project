@@ -20,8 +20,7 @@ class Amounts_GUI(QtWidgets.QWidget):
         self.ui.button_calculate.clicked.connect(self.calculate)
 
     def error(self, text):
-        QtWidgets.QMessageBox.question(self, 'Error', text,
-                                       QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
+        QtWidgets.QMessageBox.question(self, 'Error', text, QtWidgets.QMessageBox.Ok, QtWidgets.QMessageBox.Ok)
 
     def selected(self):
         current_row = self.ui.table.currentRow()
@@ -85,20 +84,28 @@ class Amounts_GUI(QtWidgets.QWidget):
 
     def calculate(self):
         selected_dishes = self.get_selected_dishes()
+        if len(selected_dishes) < 4:
+            self.error("You have to choose at least 4 foods.")
+        else:
+            self.calculate_amount(selected_dishes)
+
+    def calculate_amount(self, selected_dishes):
         amounts = get_amounts_of_selected_dishes(selected_dishes, self.nutrient_range)
         if not amounts:
             self.error("You cannot satisfy all your daily needs with this choice of foods.")
         else:
-            for row in range(self.ui.dish_amount_table.rowCount()):
-                self.set_amount_table_row(row, selected_dishes[row], amounts[row])
-            print(get_total_price(selected_dishes, amounts))
-            self.ui.total.setText("Total price: " + str(get_total_price(selected_dishes, amounts)) + "€")
+            self.set_total_price(selected_dishes, amounts)
+
+    def set_total_price(self, selected_dishes, amounts):
+        for row in range(self.ui.dish_amount_table.rowCount()):
+            self.set_amount_table_row(row, selected_dishes[row], amounts[row])
+        self.ui.total.setText("Total price: " + str(get_total_price(selected_dishes, amounts)) + "€")
 
     def set_amount_table_row(self, row, dish, amount):
         self.ui.dish_amount_table.setItem(row, 1, QTableWidgetItem(str(round(dish.calories * amount, 2))))
-        self.ui.dish_amount_table.setItem(row, 2, QTableWidgetItem(str(round(dish.proteins * amount))))
-        self.ui.dish_amount_table.setItem(row, 3, QTableWidgetItem(str(round(dish.carbs * amount))))
-        self.ui.dish_amount_table.setItem(row, 4, QTableWidgetItem(str(round(dish.fats * amount))))
+        self.ui.dish_amount_table.setItem(row, 2, QTableWidgetItem(str(round(dish.proteins * amount, 2))))
+        self.ui.dish_amount_table.setItem(row, 3, QTableWidgetItem(str(round(dish.carbs * amount, 2))))
+        self.ui.dish_amount_table.setItem(row, 4, QTableWidgetItem(str(round(dish.fats * amount, 2))))
         self.ui.dish_amount_table.setItem(row, 5, QTableWidgetItem(str(round(amount * 100, 2))))
         self.ui.dish_amount_table.setItem(row, 6, QTableWidgetItem(str(round(dish.price * amount, 2))))
 

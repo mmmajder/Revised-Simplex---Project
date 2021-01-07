@@ -22,7 +22,6 @@ def get_edges_array(selected_dishes, nutrient_range):
 
 def get_nutrient_matrix(selected_dishes):
     n = len(selected_dishes)
-    print("n = ", n)
     rows = 7 + n
     cols = 7 + 2 * n
     matrix = np.zeros((rows, cols))
@@ -40,7 +39,6 @@ def get_nutrient_matrix(selected_dishes):
         current_row += 1
     for i in range(rows):
         matrix[i][i + n] = 1
-    print(matrix)
     return np.array(matrix)
 
 
@@ -71,7 +69,7 @@ def calculate_amounts(selected_dishes, nutrient_range):
     b = get_edges_array(selected_dishes, nutrient_range)
     A = get_nutrient_matrix(selected_dishes)
     print("THEIR SIMPLEX")
-    ugradjeni(selected_dishes, nutrient_range)
+    linprog_simplex(selected_dishes, nutrient_range)
     print("\n\n\nOUR SIMPLEX")
     print("c = ", c)
     print("b = ", b)
@@ -88,7 +86,6 @@ def get_prices_array_za_ugradjeni(selected_dishes):
 
 def get_nutrient_matrix_za_ugradjeni(selected_dishes):
     n = len(selected_dishes)
-    print("n = ", n)
     rows = 7 + n
     cols = n
     matrix = np.zeros((rows, cols))
@@ -104,7 +101,7 @@ def get_nutrient_matrix_za_ugradjeni(selected_dishes):
     return np.array(matrix)
 
 
-def ugradjeni(selected_dishes, nutrient_range):
+def linprog_simplex(selected_dishes, nutrient_range):
     c = get_prices_array_za_ugradjeni(selected_dishes)
     b = get_edges_array(selected_dishes, nutrient_range)
     A = get_nutrient_matrix_za_ugradjeni(selected_dishes)

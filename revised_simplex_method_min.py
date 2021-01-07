@@ -4,39 +4,10 @@ from itertools import combinations
 import numpy as np
 from scipy.optimize import linprog
 
-
-def example_parameters():
-    c = np.array([3.0, 2.0, 6.0, 0.0, 0.0])
-    b = np.array([5.0, 4.0])
-    A = np.array([[4.0, 8.0, -1.0, 1.0, 0.0], [7.0, -2.0, 2.0, 0.0, -1.0]])
-    return c, b, A
+NO_SOLUTION = False
 
 
-def example_parameters_2():
-    obj = np.array([0.1, 0.4, 1.5])
-    rhs_ineq = np.array([5.0, -4.0])
-    lhs_ineq = np.array([[4.0, 8.0, -1.0], [-7.0, 2.0, -2.0]])
-    opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
-                  method="revised simplex")
-    print(opt)
-
-
-def example_parameters1():
-    c = np.array([-2.0, 3.0, 0.0, 0.0])
-    b = np.array([4.0, 6.0])
-    A = np.array([[1.0, 1.0, 1.0, 0.0], [1.0, -1.0, 0.0, 1.0]])
-    return c, b, A
-
-
-def exmaple_parameters1_2():
-    c = np.array([-2.0, 3.0])
-    b = np.array([4.0, 6.0])
-    A = np.array([[1.0, 1.0], [1.0, -1.0]])
-    opt = linprog(c=c, A_ub=A, b_ub=b, method="revised simplex")
-    print(" opt ", opt)
-
-
-def ugradjeni():
+def linprog_example():
     obj = [0.4, 1.5, 0.8]
     lhs_ineq = [[-84.0, -120.0, -385.0],
                 [1.3, 2.2, 15.5],
@@ -50,9 +21,7 @@ def ugradjeni():
                 [0.0, 0.0, -1.0]]
 
     rhs_ineq = [-2760.0, 204.0, -122.4, 425.0, -255.0, 92.0, -46.0, -0.5, -0.2, -0.3]
-
-    opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq,
-                  method="revised simplex")
+    opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq, method="revised simplex")
     print(opt)
 
 
@@ -68,19 +37,7 @@ def our_example():
                   [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
                   [0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
                   [0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]])
-    # b = np.array([-1590, -66, 88, -165, 275, -26.5, 165, -50, -20, -30])
-    # b = np.array([-2360., -67.2, 100.8, -84., 252., -39.3, 84., -50., -20.,
-    #               -30.])
     b = np.array([-2760.0, 204.0, -122.4, 425.0, -255.0, 255.0, -46.0, -0.5, -0.2, -0.3])
-    return c, b, A
-
-
-def example_parameters3():
-    c = np.array([1.0, -1.0, 4.0, 0.0, 0.0])
-    b = np.array([3.0, 1.0])
-    A = np.array([[1.0, -1.0, 1.0, 1.0, 0.0], [-1.0, 1.0, 1.0, 0.0, 1.0]])
-    opt = linprog(c=c, A_ub=A, b_ub=b, method="revised simplex")
-    print(" opt ", opt)
     return c, b, A
 
 
@@ -150,14 +107,15 @@ def phase_one(b, A):
                 return A_on_B, A_on_B_inv, XB, list(B)
         except:
             continue
-    return False
+    global NO_SOLUTION
+    NO_SOLUTION = True
+    return [], [], [], []
 
 
 def revised_simplex_method(c, b, A):
-    if phase_one(b, A):
-        A_on_B, A_on_B_inv, XB, B = phase_one(b, A)
-    else:
-        print("nema resenja")
+    A_on_B, A_on_B_inv, XB, B = phase_one(b, A)
+    if NO_SOLUTION:
+        print("no solution")
         return []
     while True:
         cb = get_cb(c, B)
@@ -170,10 +128,13 @@ def revised_simplex_method(c, b, A):
         B[postion_j] = k
         A_on_B_inv = change_A_on_B_inv(A_on_B_inv, postion_j, alfa)
         XB = A_on_B_inv.dot(b)
+
     print(B)
     print(XB)
     return [B, XB]
 
+
 if __name__ == '__main__':
     c, b, A = our_example()
-    revised_simplex_method(c,b,A)
+    revised_simplex_method(c, b, A)
+    linprog_example()
