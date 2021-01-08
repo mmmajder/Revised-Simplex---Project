@@ -13,7 +13,7 @@ class Amounts(QWidget):
         self.show()
 
     def setup(self, nutrient_range):
-        self.setFixedSize(1700, 800)
+        self.setMinimumSize(1700, 800)
         self.setStyleSheet(GENERAL_STYLE_SHEET)
         self.setWindowTitle("Calculate Amounts of Dishes")
         self.setWindowIcon(get_icon())
